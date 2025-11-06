@@ -52,11 +52,17 @@ body {
 
 .brand {
   font-weight: 700;
-  color: var(--accent);
+  color: #242424;
   font-size: 1.125rem
 }
 
 /* nav */
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
 .nav {
   display: flex
 }
