@@ -1,6 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import "./app.css";
 import logo from "./assets/popsbbq-logo.png"
+import portfolio1 from "./assets/BBQ-Pics/brisket-and-ribs.jpg";
+import portfolio2 from "./assets/BBQ-Pics/double-ribs.jpg"
+import portfolio3 from "./assets/BBQ-Pics/plate.jpg"
+import portfolio4 from "./assets/BBQ-Pics/potato-salad.jpg"
+import portfolio5 from "./assets/BBQ-Pics/ribs-closeup.jpg"
+import portfolio6 from "./assets/BBQ-Pics/ribs.jpg"
+import portfolio7 from "./assets/BBQ-Pics/slaw.jpg"
+import portfolio8 from "./assets/BBQ-Pics/trailer.jpg"
 
 const Home = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -137,12 +145,17 @@ const Home = () => {
         </section>
 
         <section id="portfolio" className="panel alt">
-          <div className="container">
-            <h2>Portfolio</h2>
-            <p>Gallery.</p>
-          </div>
-        </section>
-
+  <div className="container">
+    <h2>Portfolio</h2>
+    <div className="gallery">
+      {[portfolio1, portfolio2, portfolio3, portfolio4, portfolio5, portfolio6, portfolio7, portfolio8].map((img, index) => (
+        <div key={index} className="gallery-item">
+          <img src={img} alt={`Portfolio ${index + 1}`} />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
         <section id="contact" className="panel">
           <div className="container">
             <h2>Contact Us</h2>
