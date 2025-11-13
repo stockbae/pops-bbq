@@ -333,3 +333,95 @@ h2 {
     padding: 1rem;
   }
 }
+
+/* EmployeeMenu Styles */
+
+.employee-page {
+  background-color: white;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.employee-page.loading {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.employee-page.error {
+  color: red;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Menu Manager Styles */
+
+.menu-manager {
+  width: 100%;
+}
+
+.menu-manager-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.save-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.save-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Table Styles */
+
+.menu-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.category-row {
+  padding: 8px;
+  background: #f7f7f7;
+  font-weight: 600;
+}
+
+.menu-row {
+  border-bottom: 1px solid #eee;
+}
+
+.menu-row td {
+  padding: 8px;
+}
+
+.menu-input {
+  width: 100%;
+  padding: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Mobile Responsive  */
+
+@media (max-width: 768px) {
+  .menu-table {
+    font-size: 14px;
+  }
+
+  .menu-row td {
+    padding: 6px !important;
+  }
+
+  .save-btn {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+}
