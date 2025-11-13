@@ -55,18 +55,34 @@ function Home() {
       <div class="container">
         <h2>Contact Us</h2>
         <div class="contact-form-container">
-          <form class="contact-form" id="contactForm">
+          <form class="contact-form" id="contactForm" action="./contact.php" method="POST">
             <div class="form-group">
-              <input type="text" id="name" name="name" required></input>
-              <label for="name">Your Name</label>
+              <input type="text" id="first_name" name="first_name" required></input>
+              <label for="first_name">First Name</label>
+            </div>
+            <div class="form-group">
+              <input type="text" id="last_name" name="last_name" required></input>
+              <label for="last_name">Last Name</label>
             </div>
             <div class="form-group">
               <input type="email" id="email" name="email" required></input>
               <label for="email">Your Email</label>
             </div>
             <div class="form-group">
-              <input type="tel" id="phone" name="phone"> </input>
+              <input type="email" id="verify" name="verify" required></input>
+              <label for="verify">Verify Email</label>
+            </div>
+            <div class="form-group">
+              <input type="tel" id="phone" name="phone"></input>
               <label for="phone">Phone Number</label>
+            </div>
+            <div class="form-group">
+              <input type="date" id="reservation_date" name="reservation_date"></input>
+              <label for="reservation_date">Reservation Date</label>
+            </div>
+            <div class="form-group">
+              <input type="text" id="subject" name="subject" required></input>
+              <label for="subject">Subject</label>
             </div>
             <div class="form-group">
               <textarea id="message" name="message" required></textarea>
