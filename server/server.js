@@ -1,22 +1,19 @@
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import menuRoutes from "./routes/menuRoutes.js";
-import sidesRoutes from "./routes/sidesRoutes.js";
+import meatRoutes from "./routes/meatRoutes.js";
+import sideRoutes from "./routes/sideRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 
-dotenv.config();
-const app = express();
 
+const app = express();
 app.use(cors());
 app.use(express.json());
 
-// API Routes
+// ROUTES
 app.use("/api/menu", menuRoutes);
-app.use("/api/sides", sidesRoutes);
+app.use("/api/meats", meatRoutes);
+app.use("/api/sides", sideRoutes);
 app.use("/api/orders", orderRoutes);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () =>
-  console.log(`Server running on http://localhost:${PORT}`)
-);
+app.listen(5000, () => console.log("Server running on port 5000"));
