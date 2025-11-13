@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import MenuManager from "./MenuManager";
+import "../App.css";
 
 export default function EmployeeMenu() {
   const [items, setItems] = useState([]);
@@ -31,8 +32,10 @@ export default function EmployeeMenu() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updates),
       });
+
       if (!res.ok) throw new Error("Update failed");
       const updated = await res.json();
+
       setItems((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
     } catch (err) {
       console.error(err);
@@ -40,11 +43,12 @@ export default function EmployeeMenu() {
     }
   };
 
-  if (loading) return <div style={{ backgroundColor: "white", minHeight: "100vh", padding: "20px" }}>Loading...</div>;
-  if (error) return <div style={{ backgroundColor: "white", minHeight: "100vh", padding: "20px", color: "red" }}>{error}</div>;
+  if (loading) return <div className="employee-page loading">Loading...</div>;
+
+  if (error) return <div className="employee-page error">{error}</div>;
 
   return (
-    <div style={{ backgroundColor: "white", minHeight: "100vh", padding: "20px" }}>
+    <div className="employee-page">
       <MenuManager items={items} onSave={handleSave} />
     </div>
   );

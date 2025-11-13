@@ -46,7 +46,9 @@ router.patch("/:id", async (req, res) => {
   if (price !== undefined) {
     const p = parseFloat(price);
     if (isNaN(p) || p < 0) {
-      return res.status(400).json({ error: "price must be a non-negative number" });
+      return res
+        .status(400)
+        .json({ error: "price must be a non-negative number" });
     }
     updates.price = p;
   }
@@ -82,7 +84,9 @@ router.patch("/:id", async (req, res) => {
       return res.status(404).json({ error: "Menu item not found" });
     }
 
-    const [[row]] = await db.execute("SELECT * FROM menu_items WHERE id = ?", [id]);
+    const [[row]] = await db.execute("SELECT * FROM menu_items WHERE id = ?", [
+      id,
+    ]);
     res.json(row);
   } catch (err) {
     console.error(err);
