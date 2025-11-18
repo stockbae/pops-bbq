@@ -21,44 +21,21 @@ export default function ContactSection() {
     setForm((prev) => ({ ...prev, [name]: value }));
   }
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  function handleSubmit(e) {
+    // Validate fields client-side (keep user on the page if validation fails)
     setError(null);
     setSuccess(null);
 
     if (form.email !== form.verify) {
+      // Prevent submission if emails don't match
+      e.preventDefault();
       setError('Email and verify email do not match');
       return;
     }
 
+    // Allow native form submission to the action URL (Formsubmit.co)
     setLoading(true);
-    try {
-      // Send as FormData so PHP can read via $_POST
-      const fd = new FormData();
-      Object.keys(form).forEach((k) => fd.append(k, form[k]));
-
-      const res = await fetch('./contact.php', {
-        method: 'POST',
-        body: fd,
-      });
-
-      const text = await res.text();
-      if (!res.ok) {
-        setError(text || `Server error: ${res.status}`);
-      } else {
-        // PHP page may echo confirmation; show a simple success message and the PHP response
-        setSuccess('Message sent successfully.');
-        // Optionally show returned HTML/text from PHP in console for debugging
-        console.log('PHP response:', text);
-        // Reset form
-        setForm({ first_name: '', last_name: '', email: '', verify: '', phone: '', reservation_date: '', subject: '', message: '' });
-        if (formRef.current) formRef.current.reset();
-      }
-    } catch (err) {
-      setError(err.message || 'Network error');
-    } finally {
-      setLoading(false);
-    }
+    // Note: we don't call e.preventDefault() here so the browser will POST the form
   }
 
   return (
@@ -72,8 +49,12 @@ export default function ContactSection() {
             onSubmit={handleSubmit}
             ref={formRef}
             method="POST"
-            action="./contact.php"
+            action="https://formsubmit.co/bolajoka@matc.edu"
           >
+            {/* Formsubmit.co recommended hidden inputs */}
+            <input type="hidden" name="_subject" value="New POPS contact" />
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_next" value={window.location.origin + '/thank-you.html'} />
             <div className="form-group">
               <input
                 type="text"
