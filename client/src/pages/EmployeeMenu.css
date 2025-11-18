@@ -1,13 +1,6 @@
-* {
-  color: black;
-}
-
-body {
-  color: black;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  color: black;
+.employee-page,
+.employee-page * {
+  color: #000 !important;
 }
 
 .menu-manager-header {
