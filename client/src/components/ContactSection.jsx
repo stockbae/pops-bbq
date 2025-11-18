@@ -7,7 +7,7 @@ export default function ContactSection() {
 
   return (
     <section id="contact" className="panel">
-      <div className="container">
+      <div className="container" id="contact-container">
         <h2>Contact Us</h2>
         <form className="contact-form" onSubmit={handleSubmit}>
           <div className="form-group">

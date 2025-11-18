@@ -25,11 +25,6 @@
   text-align: center;
 }
 
-#contact h2 {
-  color: white;
-  filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.5));
-}
-
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -71,7 +66,14 @@ body {
 .container {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 1rem
+  padding: 1rem;
+}
+
+#contact-container {
+  background: linear-gradient(rgb(255, 255, 180), rgb(255, 188, 188));
+  border-radius: 24px;
+  padding: 3rem;
+  filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.5));
 }
 
 /* header / nav */
@@ -281,14 +283,13 @@ p {
 .form-group {
   position: relative;
   margin-bottom: 0.5rem;
-  filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.5));
 }
 
 .form-group input,
 .form-group textarea {
   width: 100%;
   padding: 0.8rem;
-  border: 2px solid #e5e7eb;
+  border: 2px solid black;
   border-radius: 8px;
   background: transparent;
   font-size: 1rem;
@@ -306,7 +307,7 @@ p {
   top: 50%;
   transform: translateY(-50%);
   padding: 0 0.4rem;
-  color: var(--text);
+  color: black;
   transition: all 0.3s ease;
   pointer-events: none;
 }
