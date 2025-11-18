@@ -1,3 +1,5 @@
+import '../App.css';
+
 export default function ContactSection() {
   const handleSubmit = (e) => {
     e.preventDefault();

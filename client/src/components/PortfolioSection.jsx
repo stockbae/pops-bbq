@@ -1,3 +1,4 @@
+import '../App.css';
 import portfolio1 from "../assets/BBQ-Pics/brisket-and-ribs.jpg";
 import portfolio2 from "../assets/BBQ-Pics/double-ribs.jpg";
 import portfolio3 from "../assets/BBQ-Pics/plate.jpg";
