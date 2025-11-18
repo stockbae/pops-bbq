@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import MenuManager from "./MenuManager";
 import "../App.css";
+import './EmployeeMenu.css';
 
 export default function EmployeeMenu() {
   const [items, setItems] = useState([]);

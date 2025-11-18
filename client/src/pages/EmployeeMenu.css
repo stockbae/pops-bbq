@@ -1,0 +1,21 @@
+* {
+  color: black;
+}
+
+body {
+  color: black;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: black;
+}
+
+.menu-manager-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.menu-manager-header h2 {
+  margin: 0;
+}
