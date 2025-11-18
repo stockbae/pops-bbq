@@ -81,29 +81,9 @@ export default function MenuManager({ items = [], onSave }) {
 
               {groups[category].map(({ item, idx }) => (
                 <tr key={item.id} className="menu-row">
-                  <td>{item.id}</td>
-
-                  <td>
-                    <input
-                      type="text"
-                      value={item.name}
-                      onChange={(e) => updateField(idx, "name", e.target.value)}
-                      className="menu-input"
-                    />
-                  </td>
-
-                  <td>
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={item.price}
-                      onChange={(e) =>
-                        updateField(idx, "price", e.target.value)
-                      }
-                      className="menu-input"
-                    />
-                  </td>
-
+                  <td>{item.id}</td>    {/*THIS LINE CAN BE REMOVED TO NOT SHOW ID ON PAGE*/}
+                  <td>{item.name}</td>
+                  <td>${item.price}</td>
                   <td>
                     <input
                       type="checkbox"
