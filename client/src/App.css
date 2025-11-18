@@ -1,3 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Rye&display=swap');
+
+.rye-regular {
+  font-family: "Rye", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 
 :root {
   --bg: #fa0707;
@@ -13,6 +21,21 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+#home p{
+  font-family: "Rye", serif;
+  font-size: 1.5rem;
+}
+
+h1{
+  font-family: "Rye", serif;
+  font-size: 3rem;
+}
+
+h2{
+  font-family: "Rye", serif;
+  font-size: 3rem;
 }
 
 
