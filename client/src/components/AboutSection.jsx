@@ -23,37 +23,20 @@ export default function AboutSection() {
               <img
                 src={mapImage}
                 alt="Map showing the location of Pop's BBQ"
-                style={{ maxWidth: '50%', height: 'auto', borderRadius: '8px' }}
               ></img>
             </a>
           </div>
 
           {/*Hours Text */}
           <ul className="hours-list">
-            <li>Sun-Tue: <strong>Closed</strong></li>
-            <li>Wed: 9am-5pm</li>
-            <li>Thu: 9am-5pm</li>
-            <li>Fri: 9am-5pm</li>
-            <li>Sat: 9am-5pm</li>
-          </ul>
-          {/*
-  <p>
-  <a
-    href="https://www.google.com/maps/dir/Pop%27s+BBQ+Memphis+Style/Pop%27s+BBQ+Memphis+Style,+N71W13161+Appleton+Ave,+Menomonee+Falls,+WI+53051"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    Get directions on Google Maps
-  </a>
-</p>
-<img
-  src={mapImage}
-  alt="Map showing the location of Pop's BBQ"
-  style={{ maxWidth: '65%', height: 'auto' }}
+            <li><span className="day">Sun-Tue:</span> <span className="time"><strong>Closed</strong></span></li>
+            <li><span className="day">Wed:</span> <span className="time">9am-5pm</span></li>
+            <li><span className="day">Thu:</span> <span className="time">9am-5pm</span></li>
+            <li><span className="day">Fri:</span> <span className="time">9am-5pm</span></li>
+            <li><span className="day">Sat:</span> <span className="time">9am-5pm</span></li>
+        </ul>
 
-></img>
-<h2>Hours</h2> */}
-</div>
+          </div>
 
       </div>
     </section>
