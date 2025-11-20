@@ -12,3 +12,59 @@
 .menu-manager-header h2 {
   margin: 0;
 }
+
+.employee-page .menu-row .delete-btn {
+  background: #df4a56;
+  color: #842029;
+  border: 1px solid #f5c2c7;
+  cursor: pointer;
+}
+
+.employee-page .menu-row .delete-btn:hover {
+  background: #f1b0b7;
+}
+
+.employee-page .menu-row input[type="checkbox"] {
+  transform: scale(1.25);
+  margin-right: 8px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  vertical-align: middle;
+  accent-color: #0f766e;
+}
+
+.employee-page .menu-row label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+
+@media (max-width: 480px) {
+  .employee-page .menu-manager { padding: 8px; }
+  .employee-page .menu-manager-header h2 { font-size: 1.5rem; }
+  /* Layout the new-item inputs as a small grid: name full-width, price + category side-by-side, button full-width */
+  .employee-page .new-item-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "name name"
+      "price category"
+      "button button";
+    gap: 8px;
+  }
+  .employee-page .new-item-row > input:nth-child(1) { grid-area: name; } 
+  .employee-page .new-item-row > input:nth-child(2) { grid-area: price; }
+  .employee-page .new-item-row > input:nth-child(3) { grid-area: category; }
+  .employee-page .new-item-row > button { grid-area: button; }
+  .employee-page .new-item-row input,
+  .employee-page .new-item-row .save-btn { width: 100%; box-sizing: border-box; }
+  .employee-page .menu-table { table-layout: fixed; width: 100%; }
+  .employee-page .menu-row td:nth-child(1) { width: 14%; } /*delete*/
+  .employee-page .menu-row td:nth-child(2) { width: 52%; } /*name*/
+  .employee-page .menu-row td:nth-child(3) { width: 20%; } /*price*/
+  .employee-page .menu-row td:nth-child(4) { width: 14%; } /*available*/
+  .employee-page .menu-row input[type="text"],
+  .employee-page .menu-row input[type="number"] { width: 100%; box-sizing: border-box; }
+}

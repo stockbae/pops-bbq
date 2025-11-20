@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import "../App.css";
 
-export default function MenuManager({ items = [], onSave }) {
+export default function MenuManager({ items = [], onSave, onCreate, onDelete, creating = false }) {
   const [local, setLocal] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
+  const [newItem, setNewItem] = useState({ name: "", price: "", category: "", description: "", is_available: 1 });
 
   useEffect(() => {
     setLocal(items.map((it) => ({ ...it })));
@@ -47,6 +48,22 @@ export default function MenuManager({ items = [], onSave }) {
     }
   };
 
+  const createItem = async () => {
+    if (!onCreate) return;
+    // basic validation
+    if (!newItem.name || newItem.name.trim() === "") return alert("Name is required");
+    const p = parseFloat(newItem.price);
+    if (isNaN(p) || p < 0) return alert("Price must be a non-negative number");
+
+    try {
+      await onCreate({ ...newItem, price: p });
+      // reset form
+      setNewItem({ name: "", price: "", category: "", description: "", is_available: 1 });
+    } catch (err) {
+      // error handled upstream
+    }
+  };
+
   // Group items by category
   const groups = {};
   const order = [];
@@ -64,8 +81,36 @@ export default function MenuManager({ items = [], onSave }) {
     <div className="menu-manager">
       <div className="menu-manager-header">
         <h2>Employee Menu Editor</h2>
-        <button className="save-btn" onClick={saveAll} disabled={isSaving}>
-          {isSaving ? "Saving..." : "Save All"}
+        <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+          <button className="save-btn" onClick={saveAll} disabled={isSaving}>
+            {isSaving ? "Saving..." : "Save All"}
+          </button>
+        </div>
+      </div>
+
+      <div className="new-item-row" style={{ display: "flex", gap: 12, alignItems: "center", marginTop: 8 }}>
+        <input
+          placeholder="Name"
+          value={newItem.name}
+          onChange={(e) => setNewItem((s) => ({ ...s, name: e.target.value }))}
+          style={{ padding: 6 }}
+        />
+        <input
+          placeholder="Price"
+          type="number"
+          step="0.01"
+          value={newItem.price}
+          onChange={(e) => setNewItem((s) => ({ ...s, price: e.target.value }))}
+          style={{ padding: 6, width: 100 }}
+        />
+        <input
+          placeholder="Category"
+          value={newItem.category}
+          onChange={(e) => setNewItem((s) => ({ ...s, category: e.target.value }))}
+          style={{ padding: 6, width: 140 }}
+        />
+        <button className="save-btn" onClick={createItem} disabled={creating}>
+          {creating ? "Adding..." : "Add Item"}
         </button>
       </div>
 
@@ -81,17 +126,36 @@ export default function MenuManager({ items = [], onSave }) {
 
               {groups[category].map(({ item, idx }) => (
                 <tr key={item.id} className="menu-row">
-                  <td>{item.id}</td>    {/*THIS LINE CAN BE REMOVED TO NOT SHOW ID ON PAGE*/}
-                  <td>{item.name}</td>
-                  <td>${item.price}</td>
+                  <td style={{ width: 80, textAlign: "center" }}>
+                    {onDelete && (
+                      <button
+                        className="delete-btn"
+                        onClick={() => {
+                          if (confirm(`Delete "${item.name}"?`)) onDelete(item.id);
+                        }}
+                        style={{ padding: "4px 8px" }}
+                        aria-label={`Delete ${item.name}`}
+                      >
+                        Delete
+                      </button>
+                    )}
+                  </td>
                   <td>
-                    <input
-                      type="checkbox"
-                      checked={!!item.is_available}
-                      onChange={() =>
-                        updateField(idx, "is_available", !item.is_available)
-                      }
-                    />
+                    <div className="menu-text" style={{ padding: 4 }}>{item.name}</div>
+                  </td>
+                  <td>
+                    <div className="menu-text" style={{ padding: 4 }}>${typeof item.price === 'number' ? item.price.toFixed(2) : item.price}</div>
+                  </td>
+                  <td style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={!!item.is_available}
+                        onChange={() =>
+                          updateField(idx, "is_available", !item.is_available)
+                        }
+                      />
+                    </label>
                   </td>
                 </tr>
               ))}
