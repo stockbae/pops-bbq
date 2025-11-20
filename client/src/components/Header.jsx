@@ -63,7 +63,7 @@ export default function Header() {
       <div className="container header-inner">
         <div className="logo-container">
           <img className="brand" src={logo} height={40} alt="pops-bbq-logo" />
-          <div className="brand">Pops BBQ</div>
+          <div className="brand">Pop's BBQ</div>
         </div>
 
         <button

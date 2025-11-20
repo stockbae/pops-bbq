@@ -5,7 +5,7 @@ export default function HomeSection() {
     <section id="home" className="panel">
       <div className="container">
         <h1>Home</h1>
-        <p>Welcome to Pops BBQ!</p>
+        <p>Welcome to Pop's BBQ!</p>
       </div>
     </section>
   );
