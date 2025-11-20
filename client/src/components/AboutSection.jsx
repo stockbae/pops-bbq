@@ -11,6 +11,12 @@ export default function AboutSection() {
         <br></br>
 
         <h2>Location & Hours</h2>
+        <h3><a 
+              href="https://www.google.com/maps/dir/Pop%27s+BBQ+Memphis+Style/Pop%27s+BBQ+Memphis+Style,+N71W13161+Appleton+Ave,+Menomonee+Falls,+WI+53051"
+              target="_blank"
+              rel="noopener noreferrer"> 
+        N71W13161 Appleton Ave, Menomonee Falls, WI 53051
+        </a></h3>
 
         <div className="location-hours-container">
           {/*Map Image */}
@@ -29,11 +35,13 @@ export default function AboutSection() {
 
           {/*Hours Text */}
           <ul className="hours-list">
-            <li><span className="day">Sun-Tue:</span> <span className="time"><strong>Closed</strong></span></li>
             <li><span className="day">Wed:</span> <span className="time">9am-5pm</span></li>
             <li><span className="day">Thu:</span> <span className="time">9am-5pm</span></li>
             <li><span className="day">Fri:</span> <span className="time">9am-5pm</span></li>
             <li><span className="day">Sat:</span> <span className="time">9am-5pm</span></li>
+            <li><span className="day">Sun:</span> <span className="time"><strong>Closed</strong></span></li>
+            <li><span className="day">Mon:</span> <span className="time"><strong>Closed</strong></span></li>
+            <li><span className="day">Tue:</span> <span className="time"><strong>Closed</strong></span></li>
         </ul>
 
           </div>
