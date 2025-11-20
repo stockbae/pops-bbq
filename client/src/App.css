@@ -38,6 +38,10 @@ h2{
   font-size: 3rem;
 }
 
+a{
+  color: white;
+}
+
 
 #services,
 #contact {
@@ -118,10 +122,12 @@ body {
   padding: .6rem 0;
 }
 
+/*"Pop's BBQ text*/
 .brand {
+  font-family: "Rye", serif;
+  font-size: 2.5rem;
   font-weight: 700;
   color: #242424;
-  font-size: 1.125rem
 }
 
 /* nav */
@@ -220,6 +226,13 @@ body {
 
 .hamburger::after {
   top: 7px;
+}
+
+/* Force hamburger lines to be black */
+.nav-toggle .hamburger,
+.nav-toggle .hamburger::before,
+.nav-toggle .hamburger::after {
+  background-color: black !important;
 }
 
 /* page panels */
