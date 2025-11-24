@@ -11,25 +11,34 @@ export default function AboutSection() {
         <br></br>
 
         <h2>Location & Hours</h2>
-        <h3><a 
-              href="https://www.google.com/maps/dir/Pop%27s+BBQ+Memphis+Style/Pop%27s+BBQ+Memphis+Style,+N71W13161+Appleton+Ave,+Menomonee+Falls,+WI+53051"
-              target="_blank"
-              rel="noopener noreferrer"> 
-        N71W13161 Appleton Ave, Menomonee Falls, WI 53051
-        </a></h3>
+        <h3>
+          <a
+            href={
+              "https://www.google.com/maps/dir/?api=1&destination=" +
+              encodeURIComponent("N71W13161 Appleton Ave, Menomonee Falls, WI 53051")
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            N71W13161 Appleton Ave, Menomonee Falls, WI 53051
+          </a>
+        </h3>
 
         <div className="location-hours-container">
           {/*Map Image */}
           <div className="map-wrapper">
             <a
-              href="https://www.google.com/maps/dir/Pop%27s+BBQ+Memphis+Style/Pop%27s+BBQ+Memphis+Style,+N71W13161+Appleton+Ave,+Menomonee+Falls,+WI+53051"
+              href={
+                "https://www.google.com/maps/dir/?api=1&destination=" +
+                encodeURIComponent("N71W13161 Appleton Ave, Menomonee Falls, WI 53051")
+              }
               target="_blank"
               rel="noopener noreferrer"
             >
               <img
                 src={mapImage}
                 alt="Map showing the location of Pop's BBQ"
-              ></img>
+              />
             </a>
           </div>
 
