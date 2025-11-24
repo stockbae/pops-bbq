@@ -4,8 +4,7 @@ import db from "../db.js";
 const router = express.Router();
 
 /*
-  CUSTOMER: Get available menu items
-  (Sandwiches + Dinners only — catering is separate)
+  Get available menu items
 */
 router.get("/", async (req, res) => {
   try {
@@ -23,7 +22,7 @@ router.get("/", async (req, res) => {
 });
 
 /*
-  ADMIN / STAFF: Get ALL menu items (including unavailable)
+  Get ALL menu items (including unavailable) for menu editor
 */
 router.get("/all", async (req, res) => {
   try {
@@ -36,7 +35,7 @@ router.get("/all", async (req, res) => {
 });
 
 /*
-  ADMIN / STAFF: Update any menu item
+  Update any menu item
 */
 router.patch("/:id", async (req, res) => {
   const id = Number(req.params.id);
@@ -80,8 +79,7 @@ router.patch("/:id", async (req, res) => {
 });
 
 /*
-  ADMIN / STAFF: Create a new menu item
-  Expected body: { name, price, category, description?, is_available? }
+  Create a new menu item { name, price, category, description?, is_available? }
 */
 router.post("/", async (req, res) => {
   const { name, price, category, description = null, is_available = 1 } = req.body;
@@ -115,7 +113,7 @@ router.post("/", async (req, res) => {
 });
 
 /*
-  ADMIN / STAFF: Delete a menu item by id
+  Delete a menu item by id
 */
 router.delete("/:id", async (req, res) => {
   const id = Number(req.params.id);
