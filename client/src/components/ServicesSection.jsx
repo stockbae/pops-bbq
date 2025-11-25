@@ -10,6 +10,8 @@ export default function ServicesSection() {
     .then((items) => setMenu(items)).
     catch((err) => console.error(err));
   }, []);
+
+  console.log(menu);
   
   return (
     <section id="services" className="panel">

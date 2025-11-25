@@ -543,3 +543,271 @@ p {
 
   }
 }
+
+/* BUILD ORDER */
+
+/* Layout */
+.bo-container {
+  display: flex;
+  gap: 30px;
+  padding: 20px;
+  color: black !important;
+}
+
+.bo-menu {
+  flex: 3;
+}
+
+.bo-your-order {
+  flex: 1;
+  background: #fafafa;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  color: black !important;
+}
+
+/* Force text to black in this component */
+.bo-text-black,
+.bo-menu *,
+.bo-menu h3,
+.bo-menu span,
+.bo-item *,
+.bo-your-order * {
+  color: black !important;
+}
+
+/* Grid */
+.bo-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.bo-menu-column {
+  margin-bottom: 20px;
+}
+
+.bo-menu-column h3 {
+  font-weight: 700;
+}
+
+/* Menu item */
+.bo-item {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 12px;
+  position: relative;
+  transition: transform 0.15s ease;
+}
+
+.bo-item:hover {
+  transform: translateY(-2px);
+}
+
+/* Item text wrapper */
+.bo-item-text {
+  display: block;
+  font-size: 15px;
+  font-weight: 500;
+  color: black !important;
+}
+
+/* Description */
+.bo-description {
+  font-size: 13px;
+  color: #6c6c6c !important;
+  margin-top: 4px;
+}
+
+/* Add + button */
+.bo-add-button {
+  background: #ff7a00;
+  color: white !important;
+  border: none;
+  font-size: 18px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  transition: background 0.2s ease;
+}
+
+.bo-add-button:hover {
+  background: #e56d00;
+}
+
+/* Order item display */
+.bo-order-item {
+  background: #ffffff;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  color: black !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* ORDER TOTAL */
+.bo-total-container {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 2px solid #e2e2e2;
+}
+
+.bo-total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  font-weight: 600;
+  color: black;
+  margin-bottom: 15px;
+}
+
+.bo-total-amount {
+  color: #ff7a00;
+}
+
+/* CHECKOUT BUTTON */
+.bo-checkout-btn {
+  width: 100%;
+  padding: 14px;
+  background: #ff7a00;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.bo-checkout-btn:hover {
+  background: #e56d00;
+}
+
+.bo-order-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.bo-edit-btn,
+.bo-remove-btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.bo-edit-btn {
+  background: #007bff;
+  color: white;
+}
+
+.bo-edit-btn:hover {
+  background: #0066d4;
+}
+
+.bo-remove-btn {
+  background: #ff4f4f;
+  color: white;
+}
+
+.bo-remove-btn:hover {
+  background: #d63c3c;
+}
+
+/* FIXED BACKDROP OVER WHOLE SCREEN */
+.m-backdrop {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  z-index: 9999;
+}
+
+/* CENTERED MODAL BOX */
+.m-modal {
+  background: #fff;
+  width: 420px;
+  padding: 28px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  position: relative !important;
+  animation: fadeIn 0.25s ease-out;
+}
+
+/* Prevent inherited text color */
+.m-modal * {
+  color: #000 !important;
+}
+
+@keyframes m-fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.m-modal h2,
+.m-modal h3,
+.m-modal label,
+.m-modal select,
+.m-modal p {
+  color: black !important;
+}
+
+/* Dropdown */
+.m-select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 14px;
+  font-size: 15px;
+}
+
+/* Buttons */
+.m-modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.m-cancel-btn {
+  background: #eee;
+  color: #444 !important;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.m-add-btn {
+  background: #ff7a00;
+  color: white !important;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.m-add-btn:hover {
+  background: #e56d00;
+}
