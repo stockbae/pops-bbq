@@ -6,6 +6,7 @@ import PortfolioSection from "../components/PortfolioSection";
 import ContactSection from "../components/ContactSection";
 import Footer from "../components/Footer";
 import "../App.css";
+import BuildOrder from "../components/BuildOrder";
 
 export default function Home() {
   return (
@@ -15,7 +16,8 @@ export default function Home() {
       <main>
         <HomeSection />
         <AboutSection />
-        <ServicesSection />
+        {/* <ServicesSection /> */}
+        <BuildOrder />
         <PortfolioSection />
         <ContactSection />
       </main>
