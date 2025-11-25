@@ -1,47 +1,48 @@
 import React, { useState, useEffect } from "react";
+import { getMeats, getMenu, getSides } from "../Menu";
+
 //import "./BuildOrder.css";
 
 function BuildOrder() {
     const [menu, setMenu] = useState([]);
+    const [meats, setMeats] = useState([]);
+    const [sides, setSides] = useState([]);
     const [cart, setCart] = useState([]);
-
     useEffect(() => {
-        async function load() {
+        const load = async () => {
             try {
-                const res = await fetch("/api/menu/all");
-                if (!res.ok) throw new Error("Failed to load menu items");
-                const data = await res.json();
-
-                setMenu(Object.entries(data));
+                const menuFetch = await getMenu();
+                setMenu(menuFetch);
+                const meatsFetch = await getMeats();
+                setMeats(meatsFetch);
+                const sidesFetch = await getSides();
+                setSides(sidesFetch);
             } catch (err) {
                 console.error(err);
             }
-        }
+        };
+
         load();
     }, []);
-    console.log(menu);
+
     const addToCart = (item) => {
-        setCart((prev) => {
-            const existing = prev.find((i) => i.id === item.id);
-            if (existing) {
-                return prev.map((i) =>
-                    i.id === item.id ? { ...i, qty: i.qty + 1 } : i
-                );
-            }
-            return [...prev, { ...item, qty: 1 }];
-        });
+        const uniqueId = Date.now() + Math.random();
+        setCart((prev) => [...prev, { item, cartId: uniqueId }]);
     };
 
-    const changeQty = (id, delta) => {
-        setCart((prev) =>
-            prev.map((i) =>
-                i.id === id ? { ...i, qty: Math.max(i.qty + delta, 0) } : i)
-                .filter((i) => i.qty > 0)
-        );
-        console.log(cart);
+
+    const deleteItem = (cartId) => {
+        //sets the cart with everything but the 
+        setCart((prev) => prev.filter((i) => i.cartId !== cartId));
     };
 
-    const subtotal = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+    const categories = menu.reduce((acc, item) => {
+        if (!acc[item.category]) acc[item.category] = [];
+        acc[item.category].push(item);
+        return acc;
+    }, {});
+
+    const subtotal = cart.reduce((sum, i) => sum + parseFloat(i.item.price), 0);
     //TAX
     const tax = subtotal * 0.05;
     const total = subtotal + tax;
@@ -50,15 +51,25 @@ function BuildOrder() {
         <div className="container">
             <div className="menu">
                 <h2>Order</h2>
-                {menu.map((item) => (
-                    <div className="item" key={item.id}>
-                        <span>
-                            {item.name} - ${item.price.toFixed(2)}
-                        </span>
-                        <button onClick={() => addToCart(item)}>Add</button>
-                    </div>
-                ))}
+                <div className="meats-display">Meats - {meats.map(meat => meat.name).join(", ")}</div>
+                <div className="sides-display">Sides - {sides.map(side => side.name).join(", ")}</div>
+                <div className="menu-grid">
+                    {Object.keys(categories).map((cat) => (
+                        <div key={cat} className="menu-column">
+                            <h3>{cat}</h3>
+                            {categories[cat].map((item) => (
+                                <div className="item" key={item.id}>
+                                    <span>{item.name} - ${item.price}</span>
+                                    <button onClick={() => addToCart(item)}>Add</button>
+                                    <br />
+                                    <span>{item.description}</span>
+                                </div>
+                            ))}
+                        </div>
+                    ))}
+                </div>
             </div>
+
 
             <div className="cart">
                 <h2>Your Order</h2>
@@ -67,26 +78,24 @@ function BuildOrder() {
                 ) : (
                     <>
                         {cart.map((item) => (
-                            <div className="cart-item" key={item.id}>
-                                <span>{item.name}</span>
-                                <div className="qty-controls">
-                                    <button onClick={() => changeQty(item.id, -1)}>-</button>
-                                    <span>{item.qty}</span>
-                                    <button onClick={() => changeQty(item.id, 1)}>+</button>
-                                </div>
-                                <span>${(item.price * item.qty).toFixed(2)}</span>
+                            <div className="cart-item" key={item.cartId}>
+                                <span>{item.item.name} - </span>
+                                <span>${item.item.price}</span>
+                                <button onClick={() => alert}>Modify</button>
+                                <button onClick={() => deleteItem(item.cartId)}>Delete</button>
                             </div>
                         ))}
 
+                        <br />
                         <div className="total-line">Subtotal: ${subtotal.toFixed(2)}</div>
                         <div className="total-line">Tax: ${tax.toFixed(2)}</div>
                         <div className="total-line total">Total: ${total.toFixed(2)}</div>
 
+
                         <button
                             className="checkout-btn"
                             onClick={() => {
-                                alert(`Order placed! Total: $${total.toFixed(2)}`);
-                                setCart([]);
+                                alert(`Order placed! Total: $${total.toFixed(2)}!`);
                             }}
                         >
                             Checkout
