@@ -8,6 +8,10 @@ export default function EmployeeMenu() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -24,8 +28,10 @@ export default function EmployeeMenu() {
         setLoading(false);
       }
     }
-    load();
-  }, []);
+    if (isAuthenticated) {
+      load();
+    }
+  }, [isAuthenticated]);
 
   const handleSave = async (id, updates) => {
     try {
@@ -79,6 +85,63 @@ export default function EmployeeMenu() {
       setError("Failed to delete");
     }
   };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setIsLoggingIn(true);
+    setPasswordError("");
+
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: passwordInput }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setIsAuthenticated(true);
+        setPasswordInput("");
+      } else {
+        setPasswordError(data.error || "Incorrect password. Please try again.");
+        setPasswordInput("");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setPasswordError("Unable to authenticate. Please try again.");
+    } finally {
+      setIsLoggingIn(false);
+    }
+  };
+
+  // Show login form if not authenticated
+  if (!isAuthenticated) {
+    return (
+      <div className="employee-page">
+        <div className="login-overlay">
+          <div className="login-box">
+            <h2>Employee Login</h2>
+            <p>Enter password</p>
+            <form onSubmit={handleLogin}>
+              <input
+                type="password"
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
+                placeholder="Enter password"
+                autoFocus
+                className="password-input"
+              />
+              {passwordError && <p className="password-error">{passwordError}</p>}
+              <button type="submit" className="login-btn" disabled={isLoggingIn}>
+                {isLoggingIn ? "Logging in..." : "Login"}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (loading) return <div className="employee-page loading">Loading...</div>;
 

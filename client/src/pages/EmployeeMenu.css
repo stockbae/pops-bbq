@@ -43,9 +43,8 @@
 .menu-text { padding: 4px; }
 .avail-cell { display: flex; align-items: center; gap: 8px; }
 
-/* Save-All button 'dirty' state: blue until changes saved */
 #save-all-btn.dirty {
-  background-color: #457aeb; /* blue */
+  background-color: #457aeb;
   color: #fff;
   border-color: #1d4ed8;
 }
@@ -78,6 +77,80 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+}
+
+.login-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 20px;
+}
+
+.login-box {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+.login-box h2 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.login-box p {
+  margin-bottom: 24px;
+  color: #666;
+}
+
+.login-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.password-input {
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+.password-input:focus {
+  outline: none;
+  border-color: #457aeb;
+}
+
+.password-error {
+  color: #dc2626;
+  font-size: 14px;
+  margin: 0;
+}
+
+.login-btn {
+  padding: 12px 24px;
+  background-color: #457aeb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.login-btn:hover {
+  background-color: #3b6bcf;
+}
+
+.login-btn:active {
+  background-color: #2d5bb3;
 }
 
 
