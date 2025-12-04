@@ -1,6 +1,7 @@
 import '../App.css';
 import { useState, useEffect, useRef } from "react";
 import logo from "../assets/popsbbq-logo.png";
+import { Link } from 'react-router-dom';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -61,10 +62,12 @@ export default function Header() {
       id="site-header"
     >
       <div className="container header-inner">
+        <Link to="/">
         <div className="logo-container">
           <img className="brand" src={logo} height={40} alt="pops-bbq-logo" />
           <div className="brand">Pop's BBQ</div>
         </div>
+        </Link>
 
         <button
           className="nav-toggle"
