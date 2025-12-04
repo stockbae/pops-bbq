@@ -4,14 +4,20 @@ import fs from "fs";
 
 dotenv.config();
 
-const db = await mysql.createConnection({
+const db = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   port: process.env.DB_PORT,
-  ssl: { ca: fs.readFileSync("./ca (1).pem") },
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+  ssl: {
+    ca: fs.readFileSync("./ca (1).pem"),
+  },
 });
 
-console.log("Connected to the database.");
+console.log("MySQL Pool Initialized");
+
 export default db;

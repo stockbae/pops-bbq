@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 import { getMenu, getMeats, getSides } from "../Menu";
 import OptionsModal from "./OptionsModal";
 import "../App.css";
+import { Link } from "react-router-dom";
 
-function BuildOrder() {
+function BuildOrder({ order, setOrder }) {
+  // <-- order now comes from App.jsx
   const [menu, setMenu] = useState([]);
   const [meats, setMeats] = useState([]);
   const [sides, setSides] = useState([]);
 
   const [selectedItem, setSelectedItem] = useState(null);
-  const [order, setOrder] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
-
 
   useEffect(() => {
     const load = async () => {
@@ -31,23 +31,24 @@ function BuildOrder() {
   const closeModal = () => setSelectedItem(null);
 
   const addOrderItem = (itemWithChoices) => {
+    const newItem = {
+      ...itemWithChoices,
+      quantity: itemWithChoices.quantity ?? 1, // <-- ADD THIS
+    };
     if (editingIndex !== null) {
       // Update existing order item
       const updated = [...order];
-      updated[editingIndex] = itemWithChoices;
+      updated[editingIndex] = newItem;
       setOrder(updated);
-      setEditingIndex(null); // reset
+      setEditingIndex(null);
     } else {
       // Add new order item
-      setOrder((prev) => [...prev, itemWithChoices]);
+      setOrder((prev) => [...prev, newItem]);
     }
   };
 
-
-  // Calculate total price
   const orderTotal = order.reduce((sum, item) => sum + Number(item.price), 0);
 
-  // Group menu items by category
   const categories = menu.reduce((acc, item) => {
     if (!acc[item.category]) acc[item.category] = [];
     acc[item.category].push(item);
@@ -57,7 +58,7 @@ function BuildOrder() {
   return (
     <>
       <div className="bo-container">
-        {/* LEFT: MENU */}
+        {/* LEFT SIDE: MENU */}
         <div className="bo-menu">
           <h2 className="bo-title">Order</h2>
 
@@ -86,7 +87,7 @@ function BuildOrder() {
           </div>
         </div>
 
-        {/* RIGHT: ORDER SUMMARY */}
+        {/* RIGHT SIDE: ORDER SUMMARY */}
         <div className="bo-your-order">
           <h2 className="bo-title">Your Order</h2>
 
@@ -116,7 +117,6 @@ function BuildOrder() {
 
               <p className="bo-order-price">${entry.price}</p>
 
-              {/* ACTION BUTTONS */}
               <div className="bo-order-actions">
                 <button
                   className="bo-edit-btn"
@@ -140,7 +140,6 @@ function BuildOrder() {
             </div>
           ))}
 
-          {/* ORDER TOTAL */}
           {order.length > 0 && (
             <div className="bo-total-container">
               <div className="bo-total-row">
@@ -150,14 +149,14 @@ function BuildOrder() {
                 </span>
               </div>
 
-              {/* CHECKOUT BUTTON */}
-              <button className="bo-checkout-btn">Checkout</button>
+              <Link to={"/checkout"}>
+                <button className="bo-checkout-btn">Checkout</button>
+              </Link>
             </div>
           )}
         </div>
       </div>
 
-      {/* MODAL */}
       {selectedItem && (
         <OptionsModal
           item={selectedItem}
