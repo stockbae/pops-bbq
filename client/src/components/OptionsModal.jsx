@@ -25,7 +25,10 @@ export default function OptionsModal({ item, meats, sides, onClose, onAdd }) {
   function confirm() {
     // VALIDATION
     if (selectedMeats.length !== requiredMeats) {
-      return alert(`This dinner requires exactly ${requiredMeats} meat(s).`);
+      if (requiredMeats !== 1)
+        return alert(`This dinner requires exactly ${requiredMeats} meats.`);
+      else
+        return alert(`This dinner requires exactly ${requiredMeats} meat.`);
     }
     if (selectedSides.length !== requiredSides) {
       return alert(`This dinner requires exactly ${requiredSides} sides.`);
@@ -105,13 +108,21 @@ export default function OptionsModal({ item, meats, sides, onClose, onAdd }) {
 /* === RULE FUNCTION === */
 
 function getDinnerRules(item) {
-  const name = item.name.toLowerCase();
+  const description = item.description.toLowerCase();
+  const obj = { meats: 0, sides: 0 };
+  if (description.includes("meat")) {
+    const value = description.substring(description.indexOf("meat") - 2, description.indexOf("meat")).trim()
+    if (!isNaN(parseInt(value, 10))) {
+      obj.meats = parseInt(value);
+    }
+  }
 
-  if (name.includes("1 meat")) return { meats: 1, sides: 2 };
-  if (name.includes("2 meat")) return { meats: 2, sides: 2 };
-  if (name.includes("3 meat")) return { meats: 3, sides: 2 };
-  if (name.includes("4 bone")) return { meats: 0, sides: 2 }; // ribs
-  if (name.includes("half rack")) return { meats: 0, sides: 2 };
+  if (description.includes("side")) {
+    const value = description.substring(description.indexOf("side") - 2, description.indexOf("side")).trim()
+    if (!isNaN(parseInt(value, 10))) {
+      obj.sides = parseInt(value);
+    }
+  }
 
-  return { meats: 0, sides: 0 };
+  return obj;
 }
