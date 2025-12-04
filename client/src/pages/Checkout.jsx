@@ -25,6 +25,27 @@ function Checkout({ order, changeQuantity, removeFromOrder }) {
   }, [order]);
 
   const submitOrder = async () => {
+    // Basic validation
+    if (!customerName.trim()) {
+      alert("Name is required before placing an order.");
+      return;
+    }
+
+    if (!customerPhone.trim()) {
+      alert("Phone number is required before placing an order.");
+      return;
+    }
+
+    if (!customerAddress.trim()) {
+      alert("Address is required before placing an order.");
+      return;
+    }
+
+    if (order.length === 0) {
+      alert("Your order is empty.");
+      return;
+    }
+
     const payload = {
       customer_name: customerName,
       customer_phone: customerPhone,
@@ -43,9 +64,13 @@ function Checkout({ order, changeQuantity, removeFromOrder }) {
       });
 
       const data = await response.json();
-      console.log("Order saved:", data);
 
-      alert("Order submitted!");
+      if (!response.ok) {
+        alert(data.error || "Error submitting order.");
+        return;
+      }
+
+      alert("Order submitted successfully!");
     } catch (error) {
       console.error(error);
       alert("Error submitting order");
