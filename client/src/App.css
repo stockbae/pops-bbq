@@ -191,6 +191,29 @@ body {
   width: 100%;
 }
 
+/* order button */
+
+.home-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home-button {
+  display: inline-block;
+  padding: 1rem 1.5rem;
+  margin-top: 1.5rem;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-family: "Rye", serif;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+
 /* hamburger for small screens */
 .nav-toggle {
   display: none;
