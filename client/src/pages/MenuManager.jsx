@@ -152,7 +152,7 @@ export default function MenuManager({ items = [], onSave, onCreate, onDelete, cr
         {order.map((category) => (
           <tbody key={category}>
             <tr>
-              <td colSpan={4} className="category-row">
+              <td colSpan={5} className="category-row">
                 {category}
               </td>
             </tr>
@@ -174,6 +174,8 @@ export default function MenuManager({ items = [], onSave, onCreate, onDelete, cr
                 </td>
                 <td>
                   <div className="menu-text">{item.name}</div>
+                </td>
+                <td>
                   <div className="menu-text description-text">{item.description || "—"}</div>
                 </td>
                 <td>
