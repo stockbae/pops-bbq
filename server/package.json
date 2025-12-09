@@ -9,6 +9,8 @@
   },
   "scripts": {
     "start": "node server.js"
+  },
+  "devDependencies": {
     "square": "^43.2.1",
     "stripe": "^20.0.0"
   },
