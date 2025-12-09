@@ -5,6 +5,7 @@ import EmployeeMenu from "./pages/EmployeeMenu";
 import EmployeeOrders from "./pages/EmployeeOrders";
 import Checkout from "./pages/Checkout";
 import { useState } from "react";
+import OrderConfirmation from "./pages/OrderConfirmation";
 
 function App() {
   // Global order state 
@@ -50,6 +51,7 @@ function App() {
             />
           }
         />
+        <Route path="/order-confirmation" element={<OrderConfirmation />} />
       </Routes>
     </BrowserRouter>
   );
