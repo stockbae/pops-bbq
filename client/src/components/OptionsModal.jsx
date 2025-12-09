@@ -5,10 +5,10 @@ export default function OptionsModal({ item, meats, sides, onClose, onAdd }) {
   const [selectedMeats, setSelectedMeats] = useState(item.chosenMeats || []);
   const [selectedSides, setSelectedSides] = useState(item.chosenSides || []);
 
-  const isDinner = item.category === "Dinners";
-
   // RULES: how many meats/sides required
   const { meats: requiredMeats, sides: requiredSides } = getDinnerRules(item);
+  const [hasMeats, setHasMeats] = useState(requiredMeats > 0);
+  const [hasSides, setHasSides] = useState(requiredSides > 0);
 
   function toggleMeat(id) {
     setSelectedMeats((prev) =>
@@ -25,7 +25,10 @@ export default function OptionsModal({ item, meats, sides, onClose, onAdd }) {
   function confirm() {
     // VALIDATION
     if (selectedMeats.length !== requiredMeats) {
-      return alert(`This dinner requires exactly ${requiredMeats} meat(s).`);
+      if (requiredMeats !== 1)
+        return alert(`This dinner requires exactly ${requiredMeats} meats.`);
+      else
+        return alert(`This dinner requires exactly ${requiredMeats} meat.`);
     }
     if (selectedSides.length !== requiredSides) {
       return alert(`This dinner requires exactly ${requiredSides} sides.`);
@@ -45,10 +48,10 @@ export default function OptionsModal({ item, meats, sides, onClose, onAdd }) {
       <div className="m-modal">
         <h2 className="m-title">{item.name}</h2>
 
-        {isDinner && (
+        {(
           <>
-            {/* MEATS (optional depending on item) */}
-            {requiredMeats > 0 && (
+            {/* MEATS */}
+            {hasMeats && (
               <>
                 <h3 className="m-label">
                   Choose {requiredMeats} Meat{requiredMeats > 1 ? "s" : ""}
@@ -69,49 +72,61 @@ export default function OptionsModal({ item, meats, sides, onClose, onAdd }) {
             )}
 
             {/* SIDES */}
-            <h3 className="m-label">
-              Choose {requiredSides} Side{requiredSides > 1 ? "s" : ""}
-            </h3>
-            <div className="m-options-container">
-              {sides.map((side) => (
-                <label key={side.id} className="m-option">
-                  <input
-                    type="checkbox"
-                    checked={selectedSides.includes(side.id)}
-                    onChange={() => toggleSide(side.id)}
-                  />
-                  {side.name}
-                </label>
-              ))}
+            {hasSides && (
+              <>
+                <h3 className="m-label">
+                  Choose {requiredSides} Side{requiredSides > 1 ? "s" : ""}
+                </h3>
+                <div className="m-options-container">
+                  {sides.map((side) => (
+                    <label key={side.id} className="m-option">
+                      <input
+                        type="checkbox"
+                        checked={selectedSides.includes(side.id)}
+                        onChange={() => toggleSide(side.id)}
+                      />
+                      {side.name}
+                    </label>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {/* Show message if no options to choose */}
+            {!hasMeats && !hasSides && <p className="m-text">This item will be added as-is.</p>}
+
+            <div className="m-actions">
+              <button className="m-btn-cancel" onClick={onClose}>
+                Cancel
+              </button>
+              <button className="m-btn-add" onClick={confirm}>
+                Add To Order
+              </button>
             </div>
           </>
         )}
-
-        {!isDinner && <p className="m-text">This item will be added as-is.</p>}
-
-        <div className="m-actions">
-          <button className="m-btn-cancel" onClick={onClose}>
-            Cancel
-          </button>
-          <button className="m-btn-add" onClick={confirm}>
-            Add To Order
-          </button>
-        </div>
       </div>
     </div>
   );
 }
-
 /* === RULE FUNCTION === */
 
 function getDinnerRules(item) {
-  const name = item.name.toLowerCase();
+  const description = item.description.toLowerCase();
+  const obj = { meats: 0, sides: 0 };
+  if (description.includes("meat")) {
+    const value = description.substring(description.indexOf("meat") - 2, description.indexOf("meat")).trim()
+    if (!isNaN(parseInt(value, 10))) {
+      obj.meats = parseInt(value);
+    }
+  }
 
-  if (name.includes("1 meat")) return { meats: 1, sides: 2 };
-  if (name.includes("2 meat")) return { meats: 2, sides: 2 };
-  if (name.includes("3 meat")) return { meats: 3, sides: 2 };
-  if (name.includes("4 bone")) return { meats: 0, sides: 2 }; // ribs
-  if (name.includes("half rack")) return { meats: 0, sides: 2 };
+  if (description.includes("side")) {
+    const value = description.substring(description.indexOf("side") - 2, description.indexOf("side")).trim()
+    if (!isNaN(parseInt(value, 10))) {
+      obj.sides = parseInt(value);
+    }
+  }
 
-  return { meats: 0, sides: 0 };
+  return obj;
 }

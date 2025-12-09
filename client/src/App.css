@@ -23,22 +23,22 @@
   background-repeat: no-repeat;
 }
 
-#home p{
+#home p {
   font-family: "Rye", serif;
   font-size: 1.5rem;
 }
 
-h1{
+h1 {
   font-family: "Rye", serif;
   font-size: 3rem;
 }
 
-h2{
+h2 {
   font-family: "Rye", serif;
   font-size: 3rem;
 }
 
-a{
+a {
   color: white;
 }
 
@@ -137,6 +137,7 @@ body {
   align-items: center;
   gap: 0.5rem;
 }
+
 .nav {
   display: flex
 }
@@ -191,6 +192,29 @@ body {
   width: 100%;
 }
 
+/* order button */
+
+.home-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home-button {
+  display: inline-block;
+  padding: 1rem 1.5rem;
+  margin-top: 1.5rem;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-family: "Rye", serif;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+
 /* hamburger for small screens */
 .nav-toggle {
   display: none;
@@ -241,7 +265,7 @@ body {
 }
 
 .panel.alt {
-  background: #000000;
+  background: #242424;
 }
 
 h1,
@@ -264,6 +288,7 @@ p {
   font-size: 1.2rem;
   font-weight: 500;
 }
+
 /* small screens */
 @media (max-width:800px) {
   .nav {
@@ -514,7 +539,7 @@ p {
   justify-content: flex-start;
 }
 
-.hours-list li{
+.hours-list li {
   display: flex;
   justify-content: flex-start;
   gap: 1rem;
@@ -553,6 +578,7 @@ p {
   padding: 20px;
   color: black !important;
 }
+
 
 .bo-menu {
   flex: 3;
@@ -723,6 +749,17 @@ p {
   background: #d63c3c;
 }
 
+@media (max-width: 768px) {
+  .bo-container {
+    flex-direction: column;
+  }
+
+  .bo-menu-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
 /* FIXED BACKDROP OVER WHOLE SCREEN */
 .m-backdrop {
   position: fixed !important;
@@ -810,4 +847,275 @@ p {
 
 .m-add-btn:hover {
   background: #e56d00;
+}
+
+.checkout-main {
+  background-color: #fff;
+  color: #000;
+}
+
+
+/* CHECKOUT PAGE */
+
+.checkout-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.checkout-header {
+  background-color: #db0202;
+  padding: 8px 16px;
+  color: white;
+  display: flex;
+  font-weight: bold;
+}
+
+.checkout-header .checkout-order {
+  width: 60%;
+}
+
+.checkout-header .checkout-quantity {
+  width: 25%;
+  text-align: center;
+}
+
+.checkout-header .checkout-price {
+  width: 15%;
+  text-align: right;
+}
+
+/* Item Rows */
+.checkout-item {
+  margin: 24px;
+  display: flex;
+  padding-right: 8px;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 16px;
+}
+
+.checkout-item-info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Item Text Section (no image) */
+.checkout-order {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.checkout-item-title {
+  font-size: 20px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.checkout-item-single-price {
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.checkout-remove {
+  background: transparent;
+  color: #cf0000;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Quantity Section */
+.checkout-quantity {
+  width: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkout-quantity-input {
+  padding: 8px;
+  width: 60px;
+  text-align: center;
+}
+
+/* Price Section */
+.checkout-price {
+  width: 15%;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 18px;
+}
+
+/**********************************************
+    TOTAL SUMMARY (MATCHES CART TOTALS)
+***********************************************/
+
+.checkout-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 0 24px;
+  width: 100%;
+  max-width: 300px;
+  margin-left: auto;
+  font-size: 16px;
+}
+
+.checkout-summary-row {
+  font-size: 18px;
+  margin-bottom: 24px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.checkout-summary-row:first-of-type {
+  border-top: 2px solid #db0202;
+  padding-top: 24px;
+}
+
+.checkout-summary-total {
+  font-weight: bold;
+}
+
+/* Error Input Outline */
+.input-error {
+  border: 2px solid red !important;
+  outline: none;
+}
+
+/* Error Text */
+.error-text {
+  color: red;
+  font-size: 11px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+/**********************************************
+    EMPTY STATE (IF NEEDED)
+***********************************************/
+.checkout-empty {
+  text-align: center;
+  padding: 40px;
+  color: #cf0000;
+  font-size: 18px;
+}
+
+.checkout-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.checkout-page main {
+  flex: 1;
+}
+
+.checkout-pay-btn {
+  width: 100%;
+  padding: 14px;
+  background: #db0202;
+  color: #242424;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.checkout-form-title {
+  display: flex;
+  flex-direction: column;
+  max-width: 200px;
+}
+
+/* Confirmation Page Styles */
+.confirmation-wrapper {
+  background: #ff0000;
+  min-height: 100vh;
+}
+
+.confirmation-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+}
+
+.confirmation-card {
+  width: 90%;
+  max-width: 550px;
+  background: #242424;
+  padding: 40px;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.confirmation-icon {
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+.confirmation-title {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.confirmation-text {
+  font-size: 16px;
+  margin-bottom: 25px;
+}
+
+/* Session box */
+.confirmation-session {
+  background: #f10707;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  overflow-wrap: break-word;
+  word-break: break-all;
+  /* fixes text overflow */
+}
+
+.confirmation-home-btn {
+  display: inline-block;
+  background: #ff7a00;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.confirmation-home-btn:hover {
+  background: #e56d00;
+}
+
+/* Footer */
+
+.site-footer {
+  background-color: #242424;
+  text-align: center;
+  padding: 2rem 1rem;
+  margin-top: 2rem;
+}
+
+.footer-logo-container {
+  background-color: #fff;
+  padding: 8px;
+  border-radius: 30px;
+  display: inline-block;
+}
+
+.footer-logo {
+  width: 150px;
 }
