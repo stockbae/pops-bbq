@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import MenuManager from "./MenuManager";
 import "../App.css";
 import './EmployeeMenu.css';
@@ -149,6 +150,9 @@ export default function EmployeeMenu() {
 
   return (
     <div className="employee-page">
+      <div className="employee-nav">
+        <Link to="/employee-orders" className="orders-link">View Pending Orders →</Link>
+      </div>
       <MenuManager items={items} onSave={handleSave} onCreate={handleCreate} onDelete={handleDelete} creating={isCreating} />
     </div>
   );

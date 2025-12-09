@@ -3,27 +3,20 @@ import db from "../db.js";
 
 const router = express.Router();
 
-/*
-  Get available menu items
-*/
+// Customer view — only available menu items
 router.get("/", async (req, res) => {
   try {
-    const [items] = await db.execute(
+    const [rows] = await db.execute(
       "SELECT * FROM menu_items WHERE is_available = TRUE ORDER BY category, id"
     );
-
-    res.json({
-      items,
-    });
+    res.json({ items: rows });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Error fetching menu items" });
   }
 });
 
-/*
-  Get ALL menu items (including unavailable) for menu editor
-*/
+// Admin view — all menu items
 router.get("/all", async (req, res) => {
   try {
     const [rows] = await db.execute("SELECT * FROM menu_items ORDER BY id");
@@ -34,19 +27,12 @@ router.get("/all", async (req, res) => {
   }
 });
 
-/*
-  Update any menu item
-*/
+// Admin update
 router.patch("/:id", async (req, res) => {
-  const id = Number(req.params.id);
+  const { id } = req.params;
   const { name, price, is_available } = req.body;
 
-  if (!Number.isInteger(id)) {
-    return res.status(400).json({ error: "Invalid id" });
-  }
-
   const updates = {};
-
   if (name !== undefined) updates.name = name;
   if (price !== undefined) updates.price = price;
   if (is_available !== undefined) updates.is_available = is_available ? 1 : 0;
@@ -56,21 +42,12 @@ router.patch("/:id", async (req, res) => {
   }
 
   try {
-    const fields = Object.keys(updates)
-      .map((field) => `${field} = ?`)
-      .join(", ");
+    const fields = Object.keys(updates).map((f) => `${f} = ?`).join(", ");
+    const values = [...Object.values(updates), id];
 
-    const values = Object.values(updates);
+    await db.execute(`UPDATE menu_items SET ${fields} WHERE id = ?`, values);
 
-    await db.execute(`UPDATE menu_items SET ${fields} WHERE id = ?`, [
-      ...values,
-      id,
-    ]);
-
-    const [[row]] = await db.execute("SELECT * FROM menu_items WHERE id = ?", [
-      id,
-    ]);
-
+    const [[row]] = await db.execute("SELECT * FROM menu_items WHERE id = ?", [id]);
     res.json(row);
   } catch (err) {
     console.error(err);

@@ -2,6 +2,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import EmployeeMenu from "./pages/EmployeeMenu";
+import EmployeeOrders from "./pages/EmployeeOrders";
 import Checkout from "./pages/Checkout";
 import { useState } from "react";
 
@@ -34,6 +35,9 @@ function App() {
 
         {/* EMPLOYEE MENU stays untouched for now */}
         <Route path="/employee-menu" element={<EmployeeMenu />} />
+        
+        {/* EMPLOYEE ORDERS - view pending orders */}
+        <Route path="/employee-orders" element={<EmployeeOrders />} />
 
         {/* CHECKOUT receives the same global order */}
         <Route

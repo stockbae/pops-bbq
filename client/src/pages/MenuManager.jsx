@@ -124,6 +124,12 @@ export default function MenuManager({ items = [], onSave, onCreate, onDelete, cr
           onChange={(e) => setNewItem((s) => ({ ...s, name: e.target.value }))}
         />
         <input
+          id="add-description"
+          placeholder="Description"
+          value={newItem.description}
+          onChange={(e) => setNewItem((s) => ({ ...s, description: e.target.value }))}
+        />
+        <input
           id="add-price"
           placeholder="Price"
           type="number"
@@ -168,6 +174,7 @@ export default function MenuManager({ items = [], onSave, onCreate, onDelete, cr
                 </td>
                 <td>
                   <div className="menu-text">{item.name}</div>
+                  <div className="menu-text description-text">{item.description || "—"}</div>
                 </td>
                 <td>
                   <div className="menu-text">${typeof item.price === 'number' ? item.price.toFixed(2) : item.price}</div>
