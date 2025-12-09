@@ -56,7 +56,7 @@ function BuildOrder({ order, setOrder }) {
   }, {});
 
   return (
-    <>
+    <section id="services" className="panel">
       <div className="bo-container">
         {/* LEFT SIDE: MENU */}
         <div className="bo-menu">
@@ -166,7 +166,7 @@ function BuildOrder({ order, setOrder }) {
           onAdd={addOrderItem}
         />
       )}
-    </>
+    </section>
   );
 }
 
