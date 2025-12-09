@@ -5,6 +5,7 @@ import meatRoutes from "./routes/meatRoutes.js";
 import sideRoutes from "./routes/sideRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import contactRoutes from "./routes/contactRoutes.js";
 
 
 const app = express();
@@ -17,5 +18,6 @@ app.use("/api/meats", meatRoutes);
 app.use("/api/sides", sideRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/contact", contactRoutes);
 
 app.listen(5000, () => console.log("Server running on port 5000"));
