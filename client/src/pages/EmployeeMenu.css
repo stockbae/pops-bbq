@@ -3,6 +3,27 @@
   color: #000;
 }
 
+.employee-nav {
+  margin-bottom: 20px;
+  text-align: right;
+}
+
+.orders-link {
+  display: inline-block;
+  color: #457aeb;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 10px 16px;
+  border: 2px solid #457aeb;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.orders-link:hover {
+  background-color: #457aeb;
+  color: white;
+}
+
 .menu-manager-header {
   display: inline-flex;
   align-items: center;
@@ -14,7 +35,7 @@
 }
 
 .menu-manager {
-  max-width: 760px;
+  max-width: 1000px;
 }
 
 #header-controls {
@@ -27,16 +48,25 @@
   display: inline-block;
 }
 
+.description-text {
+  font-size: 14px;
+  color: #666;
+  font-style: italic;
+  max-width: 250px;
+}
+
 #new-item-row {
   display: flex;
   gap: 12px;
   align-items: center;
   margin-top: 8px;
+  flex-wrap: wrap;
 }
 
-#add-name { padding: 6px; width: 60%; box-sizing: border-box; }
-#add-price { padding: 6px; width: 20%; box-sizing: border-box; }
-#add-category { padding: 6px; width: 15%; box-sizing: border-box; }
+#add-name { padding: 6px; width: 20%; box-sizing: border-box; min-width: 150px; }
+#add-description { padding: 6px; width: 30%; box-sizing: border-box; min-width: 180px; }
+#add-price { padding: 6px; width: 10%; box-sizing: border-box; min-width: 70px; }
+#add-category { padding: 6px; width: 13%; box-sizing: border-box; min-width: 100px; }
 #add-btn { display: inline-block; }
 
 .delete-cell { width: 80px; text-align: center; }
@@ -157,19 +187,21 @@
 @media (max-width: 480px) {
   .employee-page .menu-manager { padding: 8px; }
   .employee-page .menu-manager-header h2 { font-size: 1.5rem; }
-  /* Layout the new-item inputs as a small grid: name full-width, price + category side-by-side, button full-width */
+  /* Layout the new-item inputs as a small grid: name full-width, description full-width, price + category side-by-side, button full-width */
   .employee-page .new-item-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
       "name name"
+      "description description"
       "price category"
       "button button";
     gap: 8px;
   }
   .employee-page .new-item-row > input:nth-child(1) { grid-area: name; } 
-  .employee-page .new-item-row > input:nth-child(2) { grid-area: price; }
-  .employee-page .new-item-row > input:nth-child(3) { grid-area: category; }
+  .employee-page .new-item-row > input:nth-child(2) { grid-area: description; }
+  .employee-page .new-item-row > input:nth-child(3) { grid-area: price; }
+  .employee-page .new-item-row > input:nth-child(4) { grid-area: category; }
   .employee-page .new-item-row > button { grid-area: button; }
   .employee-page .new-item-row input,
   .employee-page .new-item-row .save-btn { width: 100%; box-sizing: border-box; }
