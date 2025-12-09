@@ -983,13 +983,27 @@ p {
   font-weight: bold;
 }
 
+/* Error Input Outline */
+.input-error {
+  border: 2px solid red !important;
+  outline: none;
+}
+
+/* Error Text */
+.error-text {
+  color: red;
+  font-size: 11px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
 /**********************************************
     EMPTY STATE (IF NEEDED)
 ***********************************************/
 .checkout-empty {
   text-align: center;
   padding: 40px;
-  color: #555;
+  color: #cf0000;
   font-size: 18px;
 }
 
@@ -1007,7 +1021,7 @@ p {
   width: 100%;
   padding: 14px;
   background: #db0202;
-  color: white;
+  color: #242424;
   border: none;
   border-radius: 10px;
   font-size: 16px;
@@ -1022,7 +1036,69 @@ p {
   max-width: 200px;
 }
 
+/* Confirmation Page Styles */
+.confirmation-wrapper {
+  background: #ff0000;
+  min-height: 100vh;
+}
 
+.confirmation-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+}
+
+.confirmation-card {
+  width: 90%;
+  max-width: 550px;
+  background: #242424;
+  padding: 40px;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.confirmation-icon {
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+.confirmation-title {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.confirmation-text {
+  font-size: 16px;
+  margin-bottom: 25px;
+}
+
+/* Session box */
+.confirmation-session {
+  background: #f10707;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  overflow-wrap: break-word;
+  word-break: break-all;
+  /* fixes text overflow */
+}
+
+.confirmation-home-btn {
+  display: inline-block;
+  background: #ff7a00;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.confirmation-home-btn:hover {
+  background: #e56d00;
+}
 
 /* Footer */
 

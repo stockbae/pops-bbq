@@ -1,0 +1,160 @@
+.employee-orders {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.orders-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.orders-header h1 {
+  margin: 0;
+  color: #333;
+}
+
+.back-link {
+  color: #457aeb;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 16px;
+  border: 2px solid #457aeb;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.back-link:hover {
+  background-color: #457aeb;
+  color: white;
+}
+
+.no-orders {
+  text-align: center;
+  color: #666;
+  font-size: 18px;
+  margin-top: 40px;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order-card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.order-header h3 {
+  margin: 0;
+  color: #333;
+}
+
+.order-time {
+  color: #666;
+  font-size: 14px;
+}
+
+.order-customer {
+  margin-bottom: 16px;
+  padding: 12px;
+  background: #f9f9f9;
+  border-radius: 6px;
+}
+
+.order-customer p {
+  margin: 4px 0;
+  color: #333;
+}
+
+.order-items h4 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.order-item {
+  margin-bottom: 12px;
+  padding: 8px;
+  background: #f9f9f9;
+  border-radius: 4px;
+}
+
+.item-name {
+  margin: 0 0 4px 0;
+  font-weight: 600;
+  color: #333;
+}
+
+.item-details {
+  margin: 2px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.order-total {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 2px solid #f0f0f0;
+  text-align: right;
+  font-size: 18px;
+  color: #333;
+}
+
+.complete-btn {
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px 24px;
+  background-color: #10b981;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.complete-btn:hover:not(:disabled) {
+  background-color: #059669;
+}
+
+.complete-btn:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .employee-orders {
+    padding: 12px;
+  }
+
+  .orders-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .order-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}

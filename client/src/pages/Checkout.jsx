@@ -1,13 +1,20 @@
-import React, { useEffect } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Checkout({ order, changeQuantity, removeFromOrder }) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  },[])
   // Calculate totals 
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
+  const [errors, setErrors] = useState({
+    name: "",
+    phone: "",
+    address: "",
+  });
 
   const total = () => {
     if (!order || order.length === 0) return 0;
@@ -25,28 +32,17 @@ function Checkout({ order, changeQuantity, removeFromOrder }) {
   }, [order]);
 
   const submitOrder = async () => {
-    // Basic validation
-    if (!customerName.trim()) {
-      alert("Name is required before placing an order.");
-      return;
-    }
+    let newErrors = {};
 
-    if (!customerPhone.trim()) {
-      alert("Phone number is required before placing an order.");
-      return;
-    }
+    if (!customerName.trim()) newErrors.name = "Name is required";
+    if (!customerPhone.trim()) newErrors.phone = "Phone number is required";
+    if (!customerAddress.trim()) newErrors.address = "Address is required";
 
-    if (!customerAddress.trim()) {
-      alert("Address is required before placing an order.");
-      return;
-    }
+    setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) return;
 
-    if (order.length === 0) {
-      alert("Your order is empty.");
-      return;
-    }
-
-    const payload = {
+    // ⭐ SAVE ORDER LOCALLY BEFORE PAYMENT
+    const pendingOrder = {
       customer_name: customerName,
       customer_phone: customerPhone,
       customer_address: customerAddress,
@@ -54,26 +50,29 @@ function Checkout({ order, changeQuantity, removeFromOrder }) {
       order: order,
     };
 
-    console.log("SENDING ORDER TO BACKEND:", payload);
+    localStorage.setItem("pending_order", JSON.stringify(pendingOrder));
 
+    // ⭐ STRIPE CHECKOUT REQUEST
     try {
-      const response = await fetch("http://localhost:5000/api/orders", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const response = await fetch(
+        "http://localhost:5000/api/payments/create-checkout-session",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ total_amount: total() }),
+        }
+      );
 
       const data = await response.json();
 
-      if (!response.ok) {
-        alert(data.error || "Error submitting order.");
-        return;
+      if (data.url) {
+        window.location.href = data.url; // redirect to Stripe
+      } else {
+        alert("Could not start payment.");
       }
-
-      alert("Order submitted successfully!");
-    } catch (error) {
-      console.error(error);
-      alert("Error submitting order");
+    } catch (err) {
+      console.error(err);
+      alert("Payment failed.");
     }
   };
 
@@ -95,33 +94,48 @@ function Checkout({ order, changeQuantity, removeFromOrder }) {
               Name:
               <input
                 type="text"
+                className={errors.name ? "input-error" : ""}
                 placeholder="Name"
                 required
                 value={customerName}
-                onChange={(e) => setCustomerName(e.target.value)}
+                onChange={(e) => {
+                  setCustomerName(e.target.value);
+                  if (errors.name) setErrors({ ...errors, name: "" });
+                }}
               />
+              {errors.name && <p className="error-text">{errors.name}</p>}
             </h3>
 
             <h3 className="checkout-form-title">
               Phone:
               <input
                 type="tel"
+                className={errors.phone ? "input-error" : ""}
                 placeholder="Phone Number"
                 required
                 value={customerPhone}
-                onChange={(e) => setCustomerPhone(e.target.value)}
+                onChange={(e) => {
+                  setCustomerPhone(e.target.value);
+                  if (errors.phone) setErrors({ ...errors, phone: "" });
+                }}
               />
+              {errors.phone && <p className="error-text">{errors.phone}</p>}
             </h3>
 
             <h3 className="checkout-form-title">
               Address:
               <input
                 type="text"
+                className={errors.address ? "input-error" : ""}
                 placeholder="Address"
                 required
                 value={customerAddress}
-                onChange={(e) => setCustomerAddress(e.target.value)}
+                onChange={(e) => {
+                  setCustomerAddress(e.target.value);
+                  if (errors.address) setErrors({ ...errors, address: "" });
+                }}
               />
+              {errors.address && <p className="error-text">{errors.address}</p>}
             </h3>
           </form>
 
