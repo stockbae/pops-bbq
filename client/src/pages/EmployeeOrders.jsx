@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useEmployeeAuth } from "../hooks/useEmployeeAuth";
 import "../App.css";
 import "./EmployeeOrders.css";
 
@@ -8,6 +9,15 @@ export default function EmployeeOrders() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [completingOrders, setCompletingOrders] = useState(new Set());
+
+  const {
+    isAuthenticated,
+    passwordInput,
+    setPasswordInput,
+    passwordError,
+    isLoggingIn,
+    handleLogin,
+  } = useEmployeeAuth();
 
   useEffect(() => {
     async function loadOrders() {
@@ -24,8 +34,10 @@ export default function EmployeeOrders() {
         setLoading(false);
       }
     }
-    loadOrders();
-  }, []);
+    if (isAuthenticated) {
+      loadOrders();
+    }
+  }, [isAuthenticated]);
 
   const handleCompleteOrder = async (orderId) => {
     if (!confirm("Mark this order as complete?")) return;
@@ -54,6 +66,34 @@ export default function EmployeeOrders() {
       });
     }
   };
+
+  // Show login form if not authenticated
+  if (!isAuthenticated) {
+    return (
+      <div className="employee-page">
+        <div className="login-overlay">
+          <div className="login-box">
+            <h2>Employee Login</h2>
+            <p>Enter password</p>
+            <form onSubmit={handleLogin}>
+              <input
+                type="password"
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
+                placeholder="Enter password"
+                autoFocus
+                className="password-input"
+              />
+              {passwordError && <p className="password-error">{passwordError}</p>}
+              <button type="submit" className="login-btn" disabled={isLoggingIn}>
+                {isLoggingIn ? "Logging in..." : "Login"}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (loading) return <div className="employee-page loading">Loading orders...</div>;
   if (error) return <div className="employee-page error">{error}</div>;

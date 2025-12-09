@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MenuManager from "./MenuManager";
+import { useEmployeeAuth } from "../hooks/useEmployeeAuth";
 import "../App.css";
 import './EmployeeMenu.css';
 
@@ -9,10 +10,15 @@ export default function EmployeeMenu() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [passwordInput, setPasswordInput] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  
+  const {
+    isAuthenticated,
+    passwordInput,
+    setPasswordInput,
+    passwordError,
+    isLoggingIn,
+    handleLogin,
+  } = useEmployeeAuth();
 
   useEffect(() => {
     async function load() {
@@ -84,35 +90,6 @@ export default function EmployeeMenu() {
     } catch (err) {
       console.error(err);
       setError("Failed to delete");
-    }
-  };
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setIsLoggingIn(true);
-    setPasswordError("");
-
-    try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password: passwordInput }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok && data.success) {
-        setIsAuthenticated(true);
-        setPasswordInput("");
-      } else {
-        setPasswordError(data.error || "Incorrect password. Please try again.");
-        setPasswordInput("");
-      }
-    } catch (err) {
-      console.error("Login error:", err);
-      setPasswordError("Unable to authenticate. Please try again.");
-    } finally {
-      setIsLoggingIn(false);
     }
   };
 
