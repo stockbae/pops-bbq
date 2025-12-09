@@ -4,8 +4,6 @@ import Footer from "../components/Footer";
 
 function OrderConfirmation() {
   const [sessionId, setSessionId] = useState(null);
-  const [orderSaved, setOrderSaved] = useState(false);
-
   // Read Stripe session_id from URL
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -15,12 +13,12 @@ function OrderConfirmation() {
   // Save order to backend ONLY once
   useEffect(() => {
     async function saveOrder() {
-      if (orderSaved) return; // prevent double sending
-
       const stored = localStorage.getItem("pending_order");
-      if (!stored) return;
+      if (!stored) return; // Already removed
 
       const orderData = JSON.parse(stored);
+
+      localStorage.removeItem("pending_order");
 
       try {
         const response = await fetch("http://localhost:5000/api/orders", {
@@ -31,18 +29,16 @@ function OrderConfirmation() {
 
         const data = await response.json();
         console.log("ORDER SAVE RESPONSE:", data);
-
-        if (data.success) {
-          localStorage.removeItem("pending_order");
-          setOrderSaved(true); // mark as saved so it won’t resend
-        }
       } catch (err) {
         console.error("ORDER SAVE FAILED:", err);
+
+        // Optional: restore order if API fails
+        localStorage.setItem("pending_order", stored);
       }
     }
 
     saveOrder();
-  }, [orderSaved]);
+  }, []);
 
   return (
     <div className="confirmation-wrapper">
