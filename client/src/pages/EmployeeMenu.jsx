@@ -7,6 +7,8 @@ import './EmployeeMenu.css';
 
 export default function EmployeeMenu() {
   const [items, setItems] = useState([]);
+  const [meats, setMeats] = useState([]);
+  const [sides, setSides] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
@@ -20,23 +22,62 @@ export default function EmployeeMenu() {
     handleLogin,
   } = useEmployeeAuth();
 
-  useEffect(() => {
-    async function load() {
-      try {
-        setLoading(true);
-        const res = await fetch("/api/menu/all");
-        if (!res.ok) throw new Error("Failed to load menu items");
-        const data = await res.json();
-        setItems(data);
-      } catch (err) {
-        console.error(err);
-        setError("Failed to load menu items");
-      } finally {
-        setLoading(false);
+  const loadData = async () => {
+    try {
+      setLoading(true);
+      const [menuRes, meatsRes, sidesRes] = await Promise.all([
+        fetch("/api/menu/all"),
+        fetch("/api/meats/all"),
+        fetch("/api/sides/all")
+      ]);
+      
+      if (!menuRes.ok || !meatsRes.ok || !sidesRes.ok) {
+        throw new Error("Failed to load data");
       }
+      
+      const [menuData, meatsData, sidesData] = await Promise.all([
+        menuRes.json(),
+        meatsRes.json(),
+        sidesRes.json()
+      ]);
+      
+      setItems(menuData);
+      setMeats(meatsData);
+      setSides(sidesData);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to load menu items");
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const reloadMeatsAndSides = async () => {
+    try {
+      const [meatsRes, sidesRes] = await Promise.all([
+        fetch("/api/meats/all"),
+        fetch("/api/sides/all")
+      ]);
+      
+      if (!meatsRes.ok || !sidesRes.ok) {
+        throw new Error("Failed to reload data");
+      }
+      
+      const [meatsData, sidesData] = await Promise.all([
+        meatsRes.json(),
+        sidesRes.json()
+      ]);
+      
+      setMeats(meatsData);
+      setSides(sidesData);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
     if (isAuthenticated) {
-      load();
+      loadData();
     }
   }, [isAuthenticated]);
 
@@ -93,6 +134,44 @@ export default function EmployeeMenu() {
     }
   };
 
+  // Save meat availability
+  const handleSaveMeat = async (id, updates) => {
+    try {
+      const res = await fetch(`/api/meats/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updates),
+      });
+      if (!res.ok) throw new Error("Update failed");
+      const updated = await res.json();
+      // Ensure is_available is properly converted to number
+      updated.is_available = Number(updated.is_available);
+      setMeats((prev) => [...prev.map((m) => (m.id === updated.id ? updated : m))]);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to save meat");
+    }
+  };
+
+  // Save side availability
+  const handleSaveSide = async (id, updates) => {
+    try {
+      const res = await fetch(`/api/sides/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updates),
+      });
+      if (!res.ok) throw new Error("Update failed");
+      const updated = await res.json();
+      // Ensure is_available is properly converted to number
+      updated.is_available = Number(updated.is_available);
+      setSides((prev) => [...prev.map((s) => (s.id === updated.id ? updated : s))]);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to save side");
+    }
+  };
+
   // Show login form if not authenticated
   if (!isAuthenticated) {
     return (
@@ -130,7 +209,18 @@ export default function EmployeeMenu() {
       <div className="employee-nav">
         <Link to="/employee-orders" className="orders-link">View Pending Orders →</Link>
       </div>
-      <MenuManager items={items} onSave={handleSave} onCreate={handleCreate} onDelete={handleDelete} creating={isCreating} />
+      <MenuManager 
+        items={items} 
+        meats={meats}
+        sides={sides}
+        onSave={handleSave} 
+        onCreate={handleCreate} 
+        onDelete={handleDelete} 
+        onSaveMeat={handleSaveMeat}
+        onSaveSide={handleSaveSide}
+        onReloadMeatsAndSides={reloadMeatsAndSides}
+        creating={isCreating} 
+      />
     </div>
   );
 }
