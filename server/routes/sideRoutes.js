@@ -36,7 +36,8 @@ router.patch("/:id", async (req, res) => {
       is_available,
       id,
     ]);
-    res.json({ message: "Side availability updated" });
+    const [rows] = await db.execute("SELECT * FROM sides WHERE id = ?", [id]);
+    res.json(rows[0]);
   } catch (err) {
     res.status(500).json({ error: "Error updating side" });
   }

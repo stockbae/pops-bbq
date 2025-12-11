@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import "../App.css";
 
-export default function MenuManager({ items = [], onSave, onCreate, onDelete, creating = false }) {
+export default function MenuManager({ items = [], meats = [], sides = [], onSave, onCreate, onDelete, onSaveMeat, onSaveSide, onReloadMeatsAndSides, creating = false }) {
   const [local, setLocal] = useState([]);
+  const [localMeats, setLocalMeats] = useState([]);
+  const [localSides, setLocalSides] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [newItem, setNewItem] = useState({ name: "", price: "", category: "", description: "", is_available: 1 });
@@ -10,6 +12,14 @@ export default function MenuManager({ items = [], onSave, onCreate, onDelete, cr
   useEffect(() => {
     setLocal(items.map((it) => ({ ...it })));
   }, [items]);
+
+  useEffect(() => {
+    setLocalMeats(meats.map((m) => ({ ...m })));
+  }, [meats]);
+
+  useEffect(() => {
+    setLocalSides(sides.map((s) => ({ ...s })));
+  }, [sides]);
 
   const updateField = (idx, field, value) => {
     setLocal((s) => {
@@ -21,9 +31,25 @@ export default function MenuManager({ items = [], onSave, onCreate, onDelete, cr
     try { setSaved(false); } catch (e) {}
   };
 
-  const saveAll = async () => {
-    if (!onSave) return;
+  const updateMeat = (idx, field, value) => {
+    setLocalMeats((s) => {
+      const copy = [...s];
+      copy[idx] = { ...copy[idx], [field]: value };
+      return copy;
+    });
+    setSaved(false);
+  };
 
+  const updateSide = (idx, field, value) => {
+    setLocalSides((s) => {
+      const copy = [...s];
+      copy[idx] = { ...copy[idx], [field]: value };
+      return copy;
+    });
+    setSaved(false);
+  };
+
+  const saveAll = async () => {
     const changed = local.filter((item) => {
       const orig = items.find((o) => o.id === item.id) || {};
       return (
@@ -33,20 +59,52 @@ export default function MenuManager({ items = [], onSave, onCreate, onDelete, cr
       );
     });
 
-    if (changed.length === 0) return;
+    const changedMeats = localMeats.filter((meat) => {
+      const orig = meats.find((m) => m.id === meat.id) || {};
+      return meat.is_available !== orig.is_available;
+    });
+
+    const changedSides = localSides.filter((side) => {
+      const orig = sides.find((s) => s.id === side.id) || {};
+      return side.is_available !== orig.is_available;
+    });
+
+    if (changed.length === 0 && changedMeats.length === 0 && changedSides.length === 0) return;
 
     setIsSaving(true);
     try {
-      for (const item of changed) {
-        const orig = items.find((o) => o.id === item.id) || {};
-        await onSave(item.id, {
-          name: item.name !== orig.name ? item.name : undefined,
-          price: item.price !== orig.price ? item.price : undefined,
-          is_available:
-            item.is_available !== orig.is_available
-              ? item.is_available
-              : undefined,
-        });
+      // Save menu items
+      if (onSave) {
+        for (const item of changed) {
+          const orig = items.find((o) => o.id === item.id) || {};
+          await onSave(item.id, {
+            name: item.name !== orig.name ? item.name : undefined,
+            price: item.price !== orig.price ? item.price : undefined,
+            is_available:
+              item.is_available !== orig.is_available
+                ? item.is_available
+                : undefined,
+          });
+        }
+      }
+
+      // Save meats
+      if (onSaveMeat) {
+        for (const meat of changedMeats) {
+          await onSaveMeat(meat.id, { is_available: meat.is_available });
+        }
+      }
+
+      // Save sides
+      if (onSaveSide) {
+        for (const side of changedSides) {
+          await onSaveSide(side.id, { is_available: side.is_available });
+        }
+      }
+
+      // Reload meats and sides to ensure UI is in sync
+      if ((changedMeats.length > 0 || changedSides.length > 0) && onReloadMeatsAndSides) {
+        await onReloadMeatsAndSides();
       }
 
       // mark saved until the next manual change
@@ -97,14 +155,22 @@ export default function MenuManager({ items = [], onSave, onCreate, onDelete, cr
             id="save-all-btn"
             className={`save-btn ${
               // detect any differences between local and original items
-              local.some((item) => {
+              (local.some((item) => {
                 const orig = items.find((o) => o.id === item.id) || {};
                 return (
                   item.name !== orig.name ||
                   String(item.price) !== String(orig.price) ||
                   item.is_available !== orig.is_available
                 );
-              })
+              }) ||
+              localMeats.some((meat) => {
+                const orig = meats.find((m) => m.id === meat.id) || {};
+                return meat.is_available !== orig.is_available;
+              }) ||
+              localSides.some((side) => {
+                const orig = sides.find((s) => s.id === side.id) || {};
+                return side.is_available !== orig.is_available;
+              }))
                 ? "dirty"
                 : ""
             }`}
@@ -196,6 +262,52 @@ export default function MenuManager({ items = [], onSave, onCreate, onDelete, cr
             ))}
           </tbody>
         ))}
+
+        <tbody>
+          <tr>
+            <td colSpan={5} className="category-row">Meats</td>
+          </tr>
+          {localMeats.map((meat, idx) => (
+            <tr key={`meat-${meat.id}`} className="menu-row">
+              <td className="delete-cell"></td>
+              <td colSpan="3">
+                <div className="menu-text">{meat.name}</div>
+              </td>
+              <td className="avail-cell">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={!!meat.is_available}
+                    onChange={() => updateMeat(idx, "is_available", !meat.is_available)}
+                  />
+                </label>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+
+        <tbody>
+          <tr>
+            <td colSpan={5} className="category-row">Sides</td>
+          </tr>
+          {localSides.map((side, idx) => (
+            <tr key={`side-${side.id}`} className="menu-row">
+              <td className="delete-cell"></td>
+              <td colSpan="3">
+                <div className="menu-text">{side.name}</div>
+              </td>
+              <td className="avail-cell">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={!!side.is_available}
+                    onChange={() => updateSide(idx, "is_available", !side.is_available)}
+                  />
+                </label>
+              </td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </div>
   );
