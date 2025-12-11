@@ -7,7 +7,8 @@ export default function AboutSection() {
     <section id="about" className="panel alt">
       <div className="container">
         <h2>About</h2>
-        <p>The BEST Memphis Style BBQ in the city of Milwaukee.. don't believe us? Check out our reviews!!</p>
+        <p>Pop’s BBQ Memphis Style began over 30 years ago when Pop balanced long days as a Milwaukee welder with nights tending his smoker. What started in his backyard grew into a beloved BBQ spot, built on faith, grit, and community. Known for fresh, hearty portions and our signature sauce, Pop always said it was “All in God’s Planning.” Today, his legacy continues to serve Milwaukee with love and unforgettable Memphis‑style BBQ.
+</p>
         <br></br>
 
         <h2>Location & Hours</h2>
