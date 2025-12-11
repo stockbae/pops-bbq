@@ -30,7 +30,7 @@ export default function ContactSection() {
     setForm((prev) => ({ ...prev, [name]: value }));
   }
 
-    function handleSubmit(e) {
+  function handleSubmit(e) {
     setError(null);
     if (form.email !== form.verify) {
       e.preventDefault();
@@ -67,7 +67,9 @@ export default function ContactSection() {
               required
             />
             <label htmlFor="first_name">First Name</label>
+          </div>
 
+          <div className="form-group">
             <input
               type="text"
               id="last_name"
