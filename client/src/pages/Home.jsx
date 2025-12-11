@@ -7,7 +7,7 @@ import Footer from "../components/Footer";
 import "../App.css";
 import BuildOrder from "../components/BuildOrder";
 
-export default function Home({ order, setOrder }) {
+export default function Home({ order, setOrder, consolidateOrder }) {
   return (
     <>
       <Header />
@@ -15,7 +15,7 @@ export default function Home({ order, setOrder }) {
       <main>
         <HomeSection />
         <AboutSection />
-        <BuildOrder order={order} setOrder={setOrder} />
+        <BuildOrder order={order} setOrder={setOrder} consolidateOrder={consolidateOrder} />
         <PortfolioSection />
         <ContactSection />
       </main>

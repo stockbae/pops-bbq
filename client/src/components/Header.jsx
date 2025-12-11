@@ -62,37 +62,47 @@ export default function Header() {
       id="site-header"
     >
       <div className="container header-inner">
-        <Link to="/">
-        <div className="logo-container">
-          <img className="brand" src={logo} height={40} alt="pops-bbq-logo" />
-          <div className="brand">Pop's BBQ</div>
-        </div>
+        <Link to="/" className='logo-nav'>
+          <div className="logo-container">
+            <img className="brand" src={logo} height={40} alt="pops-bbq-logo" />
+            <div className="brand">Pop's BBQ</div>
+          </div>
         </Link>
+        {location.pathname === '/checkout' ?
+          (
+            // changes the nav links to back when on checkout page
+            <Link to="/" className='nav-link'>
+              Back To Home
+            </Link>
+          ) : (
+            //default nav links
+            <>
+              <button
+                className="nav-toggle"
+                onClick={toggleMenu}
+                aria-expanded={menuOpen}
+              >
+                <span className="hamburger"></span>
+              </button>
 
-        <button
-          className="nav-toggle"
-          onClick={toggleMenu}
-          aria-expanded={menuOpen}
-        >
-          <span className="hamburger"></span>
-        </button>
-
-        <nav className={`nav ${menuOpen ? "open" : ""}`}>
-          <ul className="nav-list">
-            {["home", "about", "services", "portfolio", "contact"].map((id) => (
-              <li key={id}>
-                <a
-                  href={`#${id}`}
-                  className={`nav-link ${activeSection === id ? "active" : ""}`}
-                  onClick={(e) => handleSmoothScroll(e, id)}
-                >
-                  {id.charAt(0).toUpperCase() + id.slice(1)}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+              <nav className={`nav ${menuOpen ? "open" : ""}`}>
+                <ul className="nav-list">
+                  {["home", "about", "services", "portfolio", "contact"].map((id) => (
+                    <li key={id}>
+                      <a
+                        href={`#${id}`}
+                        className={`nav-link ${activeSection === id ? "active" : ""}`}
+                        onClick={(e) => handleSmoothScroll(e, id)}
+                      >
+                        {id.charAt(0).toUpperCase() + id.slice(1)}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            </>
+          )}
       </div>
-    </header>
+    </header >
   );
 }

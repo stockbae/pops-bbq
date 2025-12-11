@@ -130,6 +130,11 @@ body {
   color: #242424;
 }
 
+.logo-nav {
+  text-decoration: none;
+}
+
+
 /* nav */
 
 .logo-container {
@@ -913,6 +918,10 @@ p {
   font-size: 20px;
   margin-bottom: 8px;
   font-weight: 600;
+}
+
+.checkout-item-options {
+  margin-bottom: 4px;
 }
 
 .checkout-item-single-price {

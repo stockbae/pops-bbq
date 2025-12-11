@@ -1,11 +1,12 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { useState, useEffect } from "react";
+import { getMeats, getSides } from "../Menu";
 
 function Checkout({ order, changeQuantity, removeFromOrder }) {
   useEffect(() => {
     window.scrollTo(0, 0);
-  },[])
+  }, [])
   // Calculate totals 
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
@@ -15,6 +16,19 @@ function Checkout({ order, changeQuantity, removeFromOrder }) {
     phone: "",
     address: "",
   });
+
+  const [meatsList, setMeatsList] = useState([]);
+  const [sidesList, setSidesList] = useState([]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const meats = await getMeats();
+      setMeatsList(meats);
+      const sides = await getSides();
+      setSidesList(sides);
+    };
+    loadData();
+  }, []);
 
   const total = () => {
     if (!order || order.length === 0) return 0;
@@ -76,7 +90,26 @@ function Checkout({ order, changeQuantity, removeFromOrder }) {
     }
   };
 
+  // Helpers to convert meat and side IDs to names
+  const convertMeatsToNames = (meatIds) => {
+    let names = [];
+    meatIds
+      .map((id) => {
+        const meat = meatsList.find((m) => m.id === id);
+        meat ? names.push(meat.name) : names.push(id);
+      });
+    return names.join(", ");
+  };
+  const convertSidesToNames = (sideIds) => {
+    let names = [];
+    sideIds
+      .map((id) => {
+        const side = sidesList.find((s) => s.id === id);
+        side ? names.push(side.name) : names.push(id);
+      });
 
+    return names.join(", ");
+  };
   return (
     <div className="checkout-page">
       <Header />
@@ -147,13 +180,26 @@ function Checkout({ order, changeQuantity, removeFromOrder }) {
 
           <div className="checkout-items">
             {order.length === 0 && <p>Your order is empty.</p>}
-            {order.map((item) => (
-              <div className="checkout-item" key={item.id}>
+            {order.map((item, index) => (
+              <div className="checkout-item" key={`${item.id}-${index}`}>
                 {/* LEFT SIDE: ITEM INFO */}
                 <div className="checkout-order">
                   <div className="checkout-item-info">
                     <span className="checkout-item-title">
                       {item.name || item.title}
+                    </span>
+                    {/* SHOWS MEATS AND SIDES */}
+                    <span>
+                      {item.chosenMeats && item.chosenMeats.length > 0 && (
+                        <div className="checkout-item-options">
+                          Meats: {convertMeatsToNames(item.chosenMeats)}
+                        </div>
+                      )}
+                      {item.chosenSides && item.chosenSides.length > 0 && (
+                        <div className="checkout-item-options">
+                          Sides: {convertSidesToNames(item.chosenSides)}
+                        </div>
+                      )}
                     </span>
                     <span className="checkout-item-single-price">
                       $
@@ -163,7 +209,7 @@ function Checkout({ order, changeQuantity, removeFromOrder }) {
                     </span>
                     <button
                       className="checkout-remove"
-                      onClick={() => removeFromOrder(item)}
+                      onClick={() => removeFromOrder(index)}
                     >
                       Remove
                     </button>
@@ -178,7 +224,7 @@ function Checkout({ order, changeQuantity, removeFromOrder }) {
                     min="1"
                     max="99"
                     value={item.quantity}
-                    onChange={(e) => changeQuantity(item, e.target.value)}
+                    onChange={(e) => changeQuantity(e.target.value, index)}
                   />
                 </div>
 

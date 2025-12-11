@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { getMenu, getMeats, getSides } from "../Menu";
 import OptionsModal from "./OptionsModal";
 import "../App.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-function BuildOrder({ order, setOrder }) {
+function BuildOrder({ order, setOrder, consolidateOrder }) {
   // <-- order now comes from App.jsx
+  const navigate = useNavigate();
   const [menu, setMenu] = useState([]);
   const [meats, setMeats] = useState([]);
   const [sides, setSides] = useState([]);
@@ -27,6 +28,22 @@ function BuildOrder({ order, setOrder }) {
     load();
   }, []);
 
+  // Expand order so each unit is its own entry
+  const expandedOrder = useMemo(() => {
+    let expanded = [];
+    order.forEach((entry) => {
+      const qty = Number(entry.quantity) || 1;
+      // Push the entry qty times (one per unit)
+      for (let i = 0; i < qty; i++) {
+        expanded.push({ ...entry, quantity: 1 });
+      }
+    });
+    return expanded;
+
+  }, [order]);
+
+
+
   const openModal = (item) => setSelectedItem(item);
   const closeModal = () => setSelectedItem(null);
 
@@ -37,7 +54,7 @@ function BuildOrder({ order, setOrder }) {
     };
     if (editingIndex !== null) {
       // Update existing order item
-      const updated = [...order];
+      const updated = [...expandedOrder];
       updated[editingIndex] = newItem;
       setOrder(updated);
       setEditingIndex(null);
@@ -47,7 +64,12 @@ function BuildOrder({ order, setOrder }) {
     }
   };
 
-  const orderTotal = order.reduce((sum, item) => sum + Number(item.price), 0);
+  const handleCheckout = () => {
+    consolidateOrder(expandedOrder);
+    navigate("/checkout");
+  };
+
+  const orderTotal = expandedOrder.reduce((sum, item) => sum + Number(item.price), 0);
 
   const categories = menu.reduce((acc, item) => {
     if (!acc[item.category]) acc[item.category] = [];
@@ -91,10 +113,10 @@ function BuildOrder({ order, setOrder }) {
         <div className="bo-your-order">
           <h2 className="bo-title">Your Order</h2>
 
-          {order.length === 0 && <p className="bo-empty-text">No items yet.</p>}
+          {expandedOrder.length === 0 && <p className="bo-empty-text">No items yet.</p>}
 
-          {order.map((entry, index) => (
-            <div key={index} className="bo-order-item">
+          {expandedOrder.map((entry, index) => (
+            <div key={`${index}`} className="bo-order-item">
               <strong className="bo-order-name">{entry.name}</strong>
 
               {entry.chosenMeats?.length > 0 && (
@@ -131,7 +153,23 @@ function BuildOrder({ order, setOrder }) {
                 <button
                   className="bo-remove-btn"
                   onClick={() => {
-                    setOrder(order.filter((_, i) => i !== index));
+                    // Find the original consolidated item and remove 1 from quantity
+                    const originalIndex = order.findIndex(
+                      (o) =>
+                        o.id === entry.id &&
+                        JSON.stringify(o.chosenMeats) === JSON.stringify(entry.chosenMeats) &&
+                        JSON.stringify(o.chosenSides) === JSON.stringify(entry.chosenSides)
+                    );
+                    if (originalIndex >= 0) {
+                      const qty = (order[originalIndex].quantity || 1) - 1;
+                      if (qty <= 0) {
+                        setOrder(order.filter((_, i) => i !== originalIndex));
+                      } else {
+                        const updated = [...order];
+                        updated[originalIndex] = { ...updated[originalIndex], quantity: qty };
+                        setOrder(updated);
+                      }
+                    }
                   }}
                 >
                   Remove
@@ -149,9 +187,9 @@ function BuildOrder({ order, setOrder }) {
                 </span>
               </div>
 
-              <Link to={"/checkout"}>
-                <button className="bo-checkout-btn">Checkout</button>
-              </Link>
+
+              <button className="bo-checkout-btn" onClick={handleCheckout}>Checkout</button>
+
             </div>
           )}
         </div>
